@@ -204,13 +204,10 @@ app.MapGet("/api/auth/me", async (HttpContext context, AppDBContext db) =>
 .WithOpenApi();
 
 
-
-
-// Movie endpoints
+// Movie Endpoints
 app.MapGet("/api/movies", async (AppDBContext db) =>
 {
     var movies = await db.Movies
-        .Include(m => m.Reviews)
         .Select(m => new MovieDto
         {
             Id = m.Id,
@@ -252,7 +249,9 @@ app.MapGet("/api/movies/{id}", async (int id, AppDBContext db) =>
             Content = r.Content,
             Rating = r.Rating,
             CreatedAt = r.CreatedAt,
-            UserUsername = r.User.Username
+            UserId = r.UserId,
+            UserUsername = r.User.Username,
+            MovieId = r.MovieId
         }).ToList()
     };
 
@@ -261,8 +260,16 @@ app.MapGet("/api/movies/{id}", async (int id, AppDBContext db) =>
 .WithName("GetMovie")
 .WithOpenApi();
 
-app.MapPost("/api/movies", [Authorize] async (Movie movie, AppDBContext db) =>
+app.MapPost("/api/movies", [Authorize] async (CreateMovieDto createMovieDto, AppDBContext db) =>
 {
+    var movie = new Movie
+    {
+        Title = createMovieDto.Title,
+        ImageUrl = createMovieDto.ImageUrl,
+        Summary = createMovieDto.Summary,
+        ReleaseDate = createMovieDto.ReleaseDate
+    };
+
     db.Movies.Add(movie);
     await db.SaveChangesAsync();
 
@@ -293,15 +300,21 @@ app.MapGet("/api/users/{userId}/lists", [Authorize] async (string userId, AppDBC
         {
             Id = ml.Id,
             Name = ml.Name,
-            Movies = ml.Movies.Select(mli => new MovieDto
+            UserId = ml.UserId,
+            Movies = ml.Movies.Select(mli => new MovieListItemDto
             {
-                Id = mli.Movie.Id,
-                Title = mli.Movie.Title,
-                ImageUrl = mli.Movie.ImageUrl,
-                Summary = mli.Movie.Summary,
-                ReleaseDate = mli.Movie.ReleaseDate,
-                AverageRating = mli.Movie.AverageRating,
-                ReviewCount = mli.Movie.Reviews.Count
+                Id = mli.Id,
+                AddedAt = mli.AddedAt,
+                Movie = new MovieDto
+                {
+                    Id = mli.Movie.Id,
+                    Title = mli.Movie.Title,
+                    ImageUrl = mli.Movie.ImageUrl,
+                    Summary = mli.Movie.Summary,
+                    ReleaseDate = mli.Movie.ReleaseDate,
+                    AverageRating = mli.Movie.AverageRating,
+                    ReviewCount = mli.Movie.Reviews.Count
+                }
             }).ToList()
         })
         .ToListAsync();
@@ -311,12 +324,17 @@ app.MapGet("/api/users/{userId}/lists", [Authorize] async (string userId, AppDBC
 .WithName("GetUserLists")
 .WithOpenApi();
 
-app.MapPost("/api/lists", [Authorize] async (MovieList list, AppDBContext db, HttpContext context) =>
+app.MapPost("/api/lists", [Authorize] async (CreateMovieListDto createListDto, HttpContext context, AppDBContext db) =>
 {
     var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     if (userId == null) return Results.Unauthorized();
 
-    list.UserId = userId;
+    var list = new MovieList
+    {
+        Name = createListDto.Name,
+        UserId = userId
+    };
+
     db.MovieLists.Add(list);
     await db.SaveChangesAsync();
 
@@ -324,13 +342,14 @@ app.MapPost("/api/lists", [Authorize] async (MovieList list, AppDBContext db, Ht
     {
         Id = list.Id,
         Name = list.Name,
-        Movies = new List<MovieDto>()
+        UserId = userId,
+        Movies = new List<MovieListItemDto>()
     });
 })
 .WithName("CreateList")
 .WithOpenApi();
 
-app.MapPost("/api/lists/{listId}/movies", [Authorize] async (int listId, int movieId, AppDBContext db, HttpContext context) =>
+app.MapPost("/api/lists/{listId}/movies", [Authorize] async (int listId, int movieId, HttpContext context, AppDBContext db) =>
 {
     var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     if (userId == null) return Results.Unauthorized();
@@ -344,60 +363,48 @@ app.MapPost("/api/lists/{listId}/movies", [Authorize] async (int listId, int mov
     var movieListItem = new MovieListItem
     {
         MovieId = movieId,
-        MovieListId = listId
+        MovieListId = listId,
+        AddedAt = DateTime.UtcNow
     };
 
     db.MovieListItems.Add(movieListItem);
     await db.SaveChangesAsync();
 
-    var movieDto = new MovieDto
+    var movieListItemDto = new MovieListItemDto
     {
-        Id = movie.Id,
-        Title = movie.Title,
-        ImageUrl = movie.ImageUrl,
-        Summary = movie.Summary,
-        ReleaseDate = movie.ReleaseDate,
-        AverageRating = movie.AverageRating,
-        ReviewCount = movie.Reviews.Count
+        Id = movieListItem.Id,
+        AddedAt = movieListItem.AddedAt,
+        Movie = new MovieDto
+        {
+            Id = movie.Id,
+            Title = movie.Title,
+            ImageUrl = movie.ImageUrl,
+            Summary = movie.Summary,
+            ReleaseDate = movie.ReleaseDate,
+            AverageRating = movie.AverageRating,
+            ReviewCount = movie.Reviews.Count
+        }
     };
 
-    return Results.Created($"/api/lists/{listId}/movies/{movieId}", movieDto);
+    return Results.Created($"/api/lists/{listId}/movies/{movieId}", movieListItemDto);
 })
 .WithName("AddMovieToList")
 .WithOpenApi();
 
-// Search endpoint
-app.MapGet("/api/movies/search", async (string query, AppDBContext db) =>
-{
-    var movies = await db.Movies
-        .Where(m => m.Title.Contains(query))
-        .Select(m => new MovieDto
-        {
-            Id = m.Id,
-            Title = m.Title,
-            ImageUrl = m.ImageUrl,
-            Summary = m.Summary,
-            ReleaseDate = m.ReleaseDate,
-            AverageRating = m.AverageRating,
-            ReviewCount = m.Reviews.Count
-        })
-        .Take(10)
-        .ToListAsync();
-
-    return Results.Ok(movies);
-})
-.WithName("SearchMovies")
-.WithOpenApi();
-
-
-
-app.MapPost("/api/movies/{movieId}/reviews", [Authorize] async (int movieId, Review review, AppDBContext db, HttpContext context) =>
+// Review Endpoints
+app.MapPost("/api/movies/{movieId}/reviews", [Authorize] async (int movieId, CreateReviewDto createReviewDto, HttpContext context, AppDBContext db) =>
 {
     var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     if (userId == null) return Results.Unauthorized();
 
-    review.MovieId = movieId;
-    review.UserId = userId;
+    var review = new Review
+    {
+        MovieId = movieId,
+        UserId = userId,
+        Content = createReviewDto.Content,
+        Rating = createReviewDto.Rating,
+        CreatedAt = DateTime.UtcNow
+    };
 
     db.Reviews.Add(review);
     await db.SaveChangesAsync();
@@ -414,7 +421,9 @@ app.MapPost("/api/movies/{movieId}/reviews", [Authorize] async (int movieId, Rev
         Content = savedReview.Content,
         Rating = savedReview.Rating,
         CreatedAt = savedReview.CreatedAt,
-        UserUsername = savedReview.User.Username
+        UserId = savedReview.UserId,
+        UserUsername = savedReview.User.Username,
+        MovieId = savedReview.MovieId
     };
 
     return Results.Created($"/api/reviews/{review.Id}", reviewDto);
@@ -422,54 +431,7 @@ app.MapPost("/api/movies/{movieId}/reviews", [Authorize] async (int movieId, Rev
 .WithName("CreateReview")
 .WithOpenApi();
 
-app.MapPut("/api/movies/{movieId}/reviews/{reviewId}", [Authorize] async (int movieId, int reviewId, Review updatedReview, AppDBContext db, HttpContext context) =>
-{
-    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    if (userId == null) return Results.Unauthorized();
 
-    var existingReview = await db.Reviews
-        .Include(r => r.User)
-        .FirstOrDefaultAsync(r => r.Id == reviewId && r.MovieId == movieId);
-
-    if (existingReview == null || existingReview.UserId != userId) return Results.NotFound();
-
-    existingReview.Content = updatedReview.Content;
-    existingReview.Rating = updatedReview.Rating;
-
-    await db.SaveChangesAsync();
-
-    var reviewDto = new ReviewDto
-    {
-        Id = existingReview.Id,
-        Content = existingReview.Content,
-        Rating = existingReview.Rating,
-        CreatedAt = existingReview.CreatedAt,
-        UserUsername = existingReview.User.Username
-    };
-
-    return Results.Ok(reviewDto);
-})
-.WithName("UpdateReview")
-.WithOpenApi();
-
-app.MapDelete("/api/movies/{movieId}/reviews/{reviewId}", [Authorize] async (int movieId, int reviewId, AppDBContext db, HttpContext context) =>
-{
-    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    if (userId == null) return Results.Unauthorized();
-
-    var existingReview = await db.Reviews
-        .Include(r => r.User)
-        .FirstOrDefaultAsync(r => r.Id == reviewId && r.MovieId == movieId);
-
-    if (existingReview == null || existingReview.UserId != userId) return Results.NotFound();
-
-    db.Reviews.Remove(existingReview);
-    await db.SaveChangesAsync();
-
-    return Results.NoContent();
-})
-.WithName("DeleteReview")
-.WithOpenApi();
 
 app.Run();
 
