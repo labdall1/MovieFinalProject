@@ -1,37 +1,58 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Container, Form, Button, Row, Col } from 'react-bootstrap';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const navigate = useNavigate();
 
-  const onSubmit = data => {
-    console.log(data); // Handle login logic here
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post('https://localhost:7219/api/auth/login', {
+        username: data.username, // Use "username" here
+        password: data.password,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+        }
+      });
+
+      // Handle successful login
+      toast.success("Login successful!");
+      // Example: Redirect to a dashboard page
+      // navigate('/dashboard');
+
+    } catch (error) {
+      // Handle errors
+      const errorMessage = error.response?.data?.message || "Login failed. Please try again.";
+      toast.error(`Error: ${errorMessage}`);
+    }
   };
 
   return (
     <Container className="d-flex align-items-center justify-content-center min-vh-100">
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar />
       <Row className="w-100">
         <Col md={{ span: 6, offset: 3 }} lg={{ span: 4, offset: 4 }}>
           <h2 className="text-center mb-4">Login</h2>
           <Form onSubmit={handleSubmit(onSubmit)} className="p-4 shadow-sm rounded bg-light">
-            <Form.Group controlId="formBasicEmail" className="mb-3">
-              <Form.Label>Email address</Form.Label>
+            <Form.Group controlId="formBasicUsername" className="mb-3">
+              <Form.Label>Username</Form.Label>
               <Form.Control
-                type="email"
-                placeholder="Enter email"
-                {...register("email", { 
-                  required: "Email is required", 
-                  pattern: {
-                    value: /^\S+@\S+$/i,
-                    message: "Invalid email format"
-                  }
+                type="text"
+                placeholder="Enter username"
+                {...register("username", { 
+                  required: "Username is required"
                 })}
-                isInvalid={errors.email}
+                isInvalid={errors.username}
               />
               <Form.Control.Feedback type="invalid">
-                {errors.email && errors.email.message}
+                {errors.username && errors.username.message}
               </Form.Control.Feedback>
             </Form.Group>
 

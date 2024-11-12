@@ -1,8 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MovieCard from "../screens/MovieCard";
 import { Container, Row, Col } from "react-bootstrap";
+import axios from "axios";
 
 const Home = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    // Define the async function to fetch data
+    const fetchData = async () => {
+      try {
+        // Make the GET request
+        const response = await axios.get(
+          "https://localhost:7219/api/movies"
+        );
+        setData(response.data); // Set the data received from the API
+      } catch (err) {
+        setError(err.message); // Set the error message if the request fails
+      } finally {
+        setLoading(false); // Turn off the loading state
+      }
+    };
+
+    fetchData(); // Call the fetchData function
+  }, []);
+
   const movies = [
     {
       title: "Inception",
@@ -35,7 +58,11 @@ const Home = () => {
       <h1 className="text-center mb-4">Popular Movies</h1>
       <Row>
         {movies.map((movie, index) => (
-          <Col md={3} key={index} className="d-flex justify-content-center mb-4">
+          <Col
+            md={3}
+            key={index}
+            className="d-flex justify-content-center mb-4"
+          >
             <MovieCard
               title={movie.title}
               image={movie.image}

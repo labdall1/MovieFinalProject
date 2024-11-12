@@ -1,25 +1,62 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { Container, Form, Button, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { useForm } from "react-hook-form";
+import { Container, Form, Button, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignUp = () => {
-  const { register, handleSubmit, formState: { errors }, watch } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
 
-  const onSubmit = data => {
-    console.log(data); // Handle sign-up logic here
+  const onSubmit = async (data) => {
+    try {
+      // Make API request to register user
+      const response = await axios.post(
+        "https://localhost:7219/api/auth/register",
+        {
+          username: data.name, // Assuming name is used as the username
+          password: data.password,
+          email: data.email,
+        }
+      );
+
+      console.log("Registration successful:", response.data);
+      toast.success("Registration successful!"); // Show success message
+      // Optionally redirect or clear form fields here
+    } catch (error) {
+      console.error("Registration error:", error);
+      if (error.response) {
+        // Handle API response errors
+        const errorMessage =
+          error.response?.data?.error ||
+          error.response?.data?.message ||
+          "Registration failed";
+        toast.error(`Error: ${errorMessage}`);
+      } else {
+        toast.error("Network Error: Unable to reach the server.");
+      }
+    }
   };
 
   // Watch password field for password confirmation validation
-  const password = watch('password');
+  const password = watch("password");
 
   return (
     <Container className="d-flex align-items-center justify-content-center min-vh-100">
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar />
       <Row className="w-100">
         <Col md={{ span: 6, offset: 3 }} lg={{ span: 4, offset: 4 }}>
           <h2 className="text-center mb-4">Sign Up</h2>
-          <Form onSubmit={handleSubmit(onSubmit)} className="p-4 shadow-sm rounded bg-light">
-            
+          <Form
+            onSubmit={handleSubmit(onSubmit)}
+            className="p-4 shadow-sm rounded bg-light"
+          >
             {/* Name Field */}
             <Form.Group controlId="formBasicName" className="mb-3">
               <Form.Label>Name</Form.Label>
@@ -40,12 +77,12 @@ const SignUp = () => {
               <Form.Control
                 type="email"
                 placeholder="Enter email"
-                {...register("email", { 
-                  required: "Email is required", 
+                {...register("email", {
+                  required: "Email is required",
                   pattern: {
                     value: /^\S+@\S+$/i,
-                    message: "Invalid email format"
-                  }
+                    message: "Invalid email format",
+                  },
                 })}
                 isInvalid={errors.email}
               />
@@ -64,8 +101,8 @@ const SignUp = () => {
                   required: "Password is required",
                   minLength: {
                     value: 6,
-                    message: "Password must be at least 6 characters"
-                  }
+                    message: "Password must be at least 6 characters",
+                  },
                 })}
                 isInvalid={errors.password}
               />
@@ -82,7 +119,8 @@ const SignUp = () => {
                 placeholder="Re-enter password"
                 {...register("confirmPassword", {
                   required: "Please re-enter your password",
-                  validate: value => value === password || "Passwords do not match"
+                  validate: (value) =>
+                    value === password || "Passwords do not match",
                 })}
                 isInvalid={errors.confirmPassword}
               />
@@ -96,7 +134,9 @@ const SignUp = () => {
             </Button>
 
             <div className="text-center">
-              <small>Already have an account? <Link to="/login">Log in here</Link></small>
+              <small>
+                Already have an account? <Link to="/login">Log in here</Link>
+              </small>
             </div>
           </Form>
         </Col>
