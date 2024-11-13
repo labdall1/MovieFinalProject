@@ -101,19 +101,6 @@ app.UseAuthorization();
 //Auth Endpoints
 app.MapPost("/api/auth/register", async (RegisterRequest request, AuthService authService, AppDBContext db) =>
 {
-    // Validate request
-    var validationContext = new ValidationContext(request);
-    var validationResults = new List<ValidationResult>();
-    if (!Validator.TryValidateObject(request, validationContext, validationResults, true))
-    {
-        return Results.ValidationProblem(
-            validationResults.ToDictionary(
-                vr => vr.MemberNames.First(),
-                vr => new[] { vr.ErrorMessage ?? "Validation error" }
-            )
-        );
-    }
-
     // Check if username is already taken
     if (await db.Users.AnyAsync(u => u.Username == request.Username))
     {
