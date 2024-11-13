@@ -1,10 +1,12 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Link } from 'react-router-dom';
-
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import { Link } from "react-router-dom";
+import { SignedOut, SignInButton, useUser } from "@clerk/clerk-react";
 function NavBar() {
+
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
@@ -12,21 +14,23 @@ function NavBar() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link eventKey="/" as={Link} to="/">Home</Nav.Link>
-            <Nav.Link eventKey="login" as={Link} to="/login">Login</Nav.Link>
-            <Nav.Link eventKey="login" as={Link} to="/login">MY Rating</Nav.Link>
+            <Nav.Link eventKey="/" as={Link} to="/">
+              Home
+            </Nav.Link>
+            <SignedOut>
+              <SignInButton  style={{border: 'none'}} className="bg-blue-500 hover:bg-blue-700  font-bold py-2 px-4 rounded" />
+            </SignedOut>
+            <Nav.Link eventKey="login" as={Link} to="/login">
+              MY Rating
+            </Nav.Link>
             <NavDropdown title="Search" id="basic-nav-dropdown">
-            <NavDropdown.Item href="#action/3.4">
-                Search
-              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.4">Search</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
                 Another action
               </NavDropdown.Item>
               <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              
-
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

@@ -1,20 +1,20 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
-import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import { FaStar, FaRegStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const MovieCard = ({ title, image, rating, description }) => {
+const MovieCard = ({ title, image, rating, description, movieID }) => {
   const renderStars = (rating) => {
-    const fullStars = Math.floor(rating / 2);
-    const halfStar = rating % 2 >= 1 ? true : false;
-    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+    // Ensure rating is within the range 0 to 5
+    const clampedRating = Math.max(0, Math.min(rating, 5));
+    const fullStars = Math.floor(clampedRating);
+    const emptyStars = 5 - fullStars;
 
     return (
       <>
         {[...Array(fullStars)].map((_, i) => (
           <FaStar key={`full-${i}`} className="text-warning" />
         ))}
-        {halfStar && <FaStarHalfAlt className="text-warning" />}
         {[...Array(emptyStars)].map((_, i) => (
           <FaRegStar key={`empty-${i}`} className="text-warning" />
         ))}
@@ -29,10 +29,10 @@ const MovieCard = ({ title, image, rating, description }) => {
         <Card.Title>{title}</Card.Title>
         <div className="d-flex align-items-center mb-2">
           {renderStars(rating)}
-          <span className="ms-2">{rating}/10</span>
+          <span className="ms-2">{rating}/5</span>
         </div>
         <Card.Text>{description}</Card.Text>
-        <Link to="/movie/342">
+        <Link to={`/movie/${movieID}`}>
           <Button variant="primary">Learn More</Button>
         </Link>
       </Card.Body>
