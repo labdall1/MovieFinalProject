@@ -207,7 +207,7 @@ app.MapGet("/api/auth/me", async (HttpContext context, AppDBContext db) =>
 // Movie Endpoints
 app.MapGet("/api/movies", async (AppDBContext db) =>
 {
-    var movies = await db.Movies
+    var movies = await db.Movies.Include(c => c.Reviews)
         .Select(m => new MovieDto
         {
             Id = m.Id,
