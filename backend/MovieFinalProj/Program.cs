@@ -276,6 +276,61 @@ app.MapPost("/api/movies", [Authorize] async (CreateMovieDto createMovieDto, App
 .WithName("CreateMovie")
 .WithOpenApi();
 
+app.MapPost("/api/list/movies", [Authorize] async (CreateMoveInListDto createMoveInListDto, HttpContext context, AppDBContext db) =>
+{
+
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (userId == null) return Results.Unauthorized();
+
+    var list = await db.MovieLists.FindAsync(createMoveInListDto.ListId);
+    if (list == null || list.UserId != userId) return Results.NotFound();
+
+
+    var movie = new Movie
+    {
+        Title = createMoveInListDto.Title,
+        ImageUrl = createMoveInListDto.ImageUrl,
+        Summary = createMoveInListDto.Summary,
+        ReleaseDate = createMoveInListDto.ReleaseDate
+    };
+
+    db.Movies.Add(movie);
+    await db.SaveChangesAsync();
+
+
+    var movieListItem = new MovieListItem
+    {
+        MovieId = movie.Id,
+        MovieListId = createMoveInListDto.ListId,
+        AddedAt = DateTime.UtcNow
+    };
+
+    db.MovieListItems.Add(movieListItem);
+    await db.SaveChangesAsync();
+
+    var movieListItemDto = new MovieListItemDto
+    {
+        Id = movieListItem.Id,
+        AddedAt = movieListItem.AddedAt,
+        Movie = new MovieDto
+        {
+            Id = movie.Id,
+            Title = movie.Title,
+            ImageUrl = movie.ImageUrl,
+            Summary = movie.Summary,
+            ReleaseDate = movie.ReleaseDate,
+            AverageRating = movie.AverageRating,
+            ReviewCount = movie.Reviews.Count
+        }
+    };
+
+    return Results.Created($"/api/lists/{createMoveInListDto.ListId}/movies/{movie.Id}", movieListItemDto);
+})
+.WithName("CreateMovieInsideList")
+.WithOpenApi();
+
+
+
 // MovieList Endpoints
 app.MapGet("/api/users/{userId}/lists", [Authorize] async (string userId, AppDBContext db) =>
 {
