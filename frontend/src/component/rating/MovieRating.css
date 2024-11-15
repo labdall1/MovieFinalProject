@@ -1,0 +1,251 @@
+/* Container and Section Styles */
+.movie-rating-container {
+    background-color: var(--bg-dark, #1a1b26); /* Dark background for the whole page */
+    min-height: calc(100vh - 80px); /* Full height minus header */
+    padding: 2rem 0;
+}
+
+.section-title {
+    color: var(--primary-purple, #9d7cd8); /* Purple text for section titles */
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--gradient-purple, linear-gradient(135deg, #9d7cd8, #bb9af7));
+    border-radius: 2px;
+}
+
+/* Movie Card Styles */
+.movie-card {
+    width: 18rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    background: var(--bg-darker, #16161e); /* Darker background for cards */
+    border: 1px solid rgba(157, 124, 216, 0.2); /* Subtle border */
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(157, 124, 216, 0.2); /* Hover effect */
+}
+
+.movie-image {
+    object-fit: cover;
+    height: 180px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.movie-card .card-body {
+    padding: 1.25rem;
+    color: var(--text-light, #c0caf5); /* Light text inside the card */
+}
+
+.movie-card .card-title {
+    color: var(--primary-purple, #9d7cd8); /* Purple for the title */
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+}
+
+.movie-description {
+    height: 4.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    margin-bottom: 1rem;
+    color: var(--text-muted, #565f89); /* Muted text for description */
+    line-height: 1.5;
+}
+
+/* Star Rating Styles */
+.star-rating {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.star-filled {
+    color: var(--cyan, #7dcfff) !important; /* Cyan color for filled stars */
+}
+
+.star-empty {
+    color: rgba(125, 207, 255, 0.3) !important; /* Light cyan for empty stars */
+}
+
+.rating-text {
+    color: var(--cyan, #7dcfff);
+    margin-left: 8px;
+    font-weight: 500;
+}
+/* Movie List Styles */
+.movie-list-group {
+    background-color: var(--bg-darker, #16161e); /* Darker background for list */
+    border-radius: 12px;
+    padding: 1rem;
+}
+.movie-list-item.active {
+    background-color: #7dcfff; /* Replace with your desired color */
+    color: white; /* Optional, for text contrast */
+  }
+.movie-list-item {
+    background-color: var(--bg-darker, #16161e); /* Dark background for list items */
+    color: var(--text-light, #c0caf5); /* Light text for list items */
+    border: 1px solid rgba(157, 124, 216, 0.2); /* Subtle border */
+    margin-bottom: 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.movie-list-item:hover {
+    color: white;
+    background-color: var(--bg-light, #23242f); /* Light hover background */
+}
+
+/* Movie Card Styles */
+.movie-card-custom {
+    background-color: var(--bg-darker, #ffffff); /* Darker background for cards */
+    border: 1px solid rgba(157, 124, 216, 0.2); /* Subtle border */
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-card-custom:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(157, 124, 216, 0.2); /* Hover effect */
+}
+
+.movie-card-img {
+    object-fit: cover;
+    height: 180px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.movie-card-custom .card-body {
+    padding: 1.25rem;
+    color: var(--text-light, #c0caf5); /* Light text inside the card */
+}
+
+.movie-card-custom .card-title {
+    color: var(--primary-purple, #9d7cd8); /* Purple for the title */
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+}
+
+.movie-description {
+    height: 4.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    margin-bottom: 1rem;
+    color: var(--text-muted, #565f89); /* Muted text for description */
+    line-height: 1.5;
+}
+
+/* Button Styles */
+.learn-more-btn.primary {
+    background: linear-gradient(135deg, #9d7cd8, #bb9af7) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.5rem 1.25rem !important;
+    border-radius: 25px !important;
+    font-weight: 500 !important;
+    transition: opacity 0.3s ease !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+}
+
+.learn-more-btn.secondary {
+    background: linear-gradient(135deg, #7dcfff, #2ac3de) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.5rem 1.25rem !important;
+    border-radius: 25px !important;
+    font-weight: 500 !important;
+    transition: opacity 0.3s ease !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+}
+
+.learn-more-btn:hover {
+    opacity: 0.9 !important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .movie-card {
+        width: calc(100% - 20px);
+        margin: 10px;
+    }
+}
+
+/* Additional Styles for MovieRating */
+.management-card {
+    background: var(--bg-darker, #16161e);
+    border: 1px solid rgba(157, 124, 216, 0.2);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.management-card:hover {
+    transform: translateY(-3px);
+}
+
+.management-card .card-body {
+    padding: 1.5rem;
+}
+
+.management-card h5 {
+    color: var(--cyan, #7dcfff);
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+}
+
+/* Dropdown Styles */
+.dropdown-custom .dropdown-toggle {
+    background: var(--gradient-purple, linear-gradient(135deg, #9d7cd8, #bb9af7)) !important;
+    border: none !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 20px !important;
+}
+
+.dropdown-custom .dropdown-menu {
+    background: var(--bg-darker, #16161e);
+    border: 1px solid rgba(157, 124, 216, 0.2);
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+.dropdown-custom .dropdown-item {
+    color: var(--text-light, #c0caf5);
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+}
+
+.dropdown-custom .dropdown-item:hover {
+    background: rgba(157, 124, 216, 0.1);
+    color: var(--cyan, #7dcfff);
+}

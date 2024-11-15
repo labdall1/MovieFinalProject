@@ -1,0 +1,86 @@
+/* SearchModal.css */
+.search-modal .modal-content {
+    background: var(--bg-darker, #16161e);
+    border-radius: 12px;
+    border: 1px solid rgba(157, 124, 216, 0.2);
+    box-shadow: 0 8px 20px rgba(157, 124, 216, 0.2);
+    color: var(--text-light, #c0caf5);
+    padding: 1.25rem;
+  }
+  
+  .search-modal .modal-header {
+    border-bottom: 1px solid rgba(157, 124, 216, 0.2);
+  }
+  
+  .search-modal .modal-title {
+    color: var(--primary-purple, #9d7cd8);
+    font-weight: 600;
+  }
+  
+  .search-modal .form-control {
+    background: #2a2a36;
+    color: var(--text-light, #c0caf5);
+    border: 1px solid rgba(157, 124, 216, 0.2);
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+  
+  .search-modal .form-control:focus {
+    background: #2a2a36;
+    border-color: #9d7cd8;
+    color: var(--text-light, #c0caf5);
+  }
+  
+  .search-modal .movie-details {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  
+  .search-modal .movie-details h5 {
+    color: var(--primary-purple, #9d7cd8);
+    font-size: 1.25rem;
+  }
+  
+  .search-modal .movie-details img {
+    width: 250px;
+    height: 375px;
+    border-radius: 12px;
+    object-fit: cover;
+    margin: 10px 0;
+  }
+  
+  .search-modal .movie-details p {
+    color: var(--text-muted, #565f89);
+    line-height: 1.5;
+  }
+  
+  .search-modal .movie-details .rating {
+    color: var(--cyan, #7dcfff);
+  }
+  
+  .search-modal .btn-primary {
+    background: linear-gradient(135deg, #9d7cd8, #bb9af7) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.5rem 1.25rem !important;
+    border-radius: 25px !important;
+    font-weight: 500 !important;
+    transition: opacity 0.3s ease !important;
+  }
+  
+  .search-modal .btn-secondary {
+    background: linear-gradient(135deg, #7dcfff, #2ac3de) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.5rem 1.25rem !important;
+    border-radius: 25px !important;
+    font-weight: 500 !important;
+    transition: opacity 0.3s ease !important;
+  }
+  
+  .search-modal .btn-primary:hover,
+  .search-modal .btn-secondary:hover {
+    opacity: 0.9 !important;
+  }
+  

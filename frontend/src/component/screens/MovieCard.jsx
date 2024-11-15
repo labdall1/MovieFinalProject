@@ -1,39 +1,42 @@
 import React from "react";
-import { Card, Button } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import './MovieCard.css';
 
-const MovieCard = ({ title, image, rating, description, movieID }) => {
+const MovieCard = ({ title, image, rating, description, movieID, variant = "primary" }) => {
   const renderStars = (rating) => {
-    // Ensure rating is within the range 0 to 5
     const clampedRating = Math.max(0, Math.min(rating, 5));
     const fullStars = Math.floor(clampedRating);
     const emptyStars = 5 - fullStars;
 
     return (
-      <>
+      <div className="star-rating">
         {[...Array(fullStars)].map((_, i) => (
-          <FaStar key={`full-${i}`} className="text-warning" />
+          <FaStar key={`full-${i}`} className="star-filled" />
         ))}
         {[...Array(emptyStars)].map((_, i) => (
-          <FaRegStar key={`empty-${i}`} className="text-warning" />
+          <FaRegStar key={`empty-${i}`} className="star-empty" />
         ))}
-      </>
+        <span className="rating-text">{rating}/5</span>
+      </div>
     );
   };
 
   return (
-    <Card className="shadow-sm" style={{ width: "18rem" }}>
-      <Card.Img variant="top" src={image} alt={title} />
+    <Card className="movie-card">
+      <Card.Img variant="top" src={image} alt={title} className="movie-image" />
       <Card.Body>
         <Card.Title>{title}</Card.Title>
-        <div className="d-flex align-items-center mb-2">
+        <div className="mb-2">
           {renderStars(rating)}
-          <span className="ms-2">{rating}/5</span>
         </div>
-        <Card.Text>{description}</Card.Text>
-        <Link to={`/movie/${movieID}`}>
-          <Button variant="primary">Learn More</Button>
+        <Card.Text className="movie-description">{description}</Card.Text>
+        <Link 
+          to={`/movie/${movieID}`} 
+          className={`learn-more-btn ${variant} mt-2`}
+        >
+          Learn More
         </Link>
       </Card.Body>
     </Card>

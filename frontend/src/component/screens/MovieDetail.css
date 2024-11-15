@@ -1,0 +1,194 @@
+/* MovieDetails.css */
+.movie-card-detail {
+    width: 100%;
+    margin: 10px;
+    background: var(--bg-darker, #16161e) !important;
+    border: 1px solid rgba(157, 124, 216, 0.2);
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .movie-card-detail:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(157, 124, 216, 0.2);
+  }
+  
+  .movie-image-detail {
+    object-fit: cover;
+    height: 250px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+  
+  .movie-card-detail .card-body {
+    padding: 1.25rem;
+    color: var(--text-light, #c0caf5);
+  }
+  
+  .movie-card-detail .movie-card-title {
+    color: var(--primary-purple, #9d7cd8);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+  }
+  
+  .movie-description {
+    height: 4.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    margin-bottom: 1rem;
+    color: var(--text-muted, #565f89);
+    line-height: 1.5;
+  }
+  
+  /* Star Rating Styles */
+  .star-rating {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+  
+  .star-filled {
+    color: var(--cyan, #7dcfff) !important;
+  }
+  
+  .star-empty {
+    color: rgba(125, 207, 255, 0.3) !important;
+  }
+  
+  .rating-text {
+    color: var(--cyan, #7dcfff);
+    margin-left: 8px;
+    font-weight: 500;
+  }
+  
+  /* Button Styles - Made more specific and !important to override Bootstrap */
+  .movie-card-detail .learn-more-btn.primary {
+    background: linear-gradient(135deg, #9d7cd8, #bb9af7) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.5rem 1.25rem !important;
+    border-radius: 25px !important;
+    font-weight: 500 !important;
+    transition: opacity 0.3s ease !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    width: auto !important;
+  }
+  
+  .movie-card-detail .learn-more-btn.secondary {
+    background: linear-gradient(135deg, #7dcfff, #2ac3de) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.5rem 1.25rem !important;
+    border-radius: 25px !important;
+    font-weight: 500 !important;
+    transition: opacity 0.3s ease !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    width: auto !important;
+  }
+  
+  .movie-card-detail .learn-more-btn:hover {
+    opacity: 0.9 !important;
+    color: white !important;
+    text-decoration: none !important;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .movie-card {
+        width: 100%;
+        margin: 10px
+    }
+}
+
+/* Button Styles - More refined to align with the theme */
+.movie-card-detail .learn-more-btn.primary {
+  background: linear-gradient(135deg, #9d7cd8, #bb9af7) !important;
+  border: none !important;
+  color: white !important;
+  padding: 0.75rem 1.25rem !important;
+  border-radius: 25px !important;
+  font-weight: 600 !important; /* Increased font weight */
+  text-transform: uppercase !important; /* Uppercase text for a bolder look */
+  letter-spacing: 1px !important; /* Added spacing for a cleaner look */
+  transition: opacity 0.3s ease, transform 0.3s ease !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  width: auto !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important; /* Soft shadow for depth */
+}
+
+.movie-card-detail .learn-more-btn.secondary {
+  background: linear-gradient(135deg, #7dcfff, #2ac3de) !important;
+  border: none !important;
+  color: white !important;
+  padding: 0.75rem 1.25rem !important;
+  border-radius: 25px !important;
+  font-weight: 600 !important; /* Increased font weight */
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  transition: opacity 0.3s ease, transform 0.3s ease !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  width: auto !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.movie-card-detail .learn-more-btn:hover {
+  opacity: 0.9 !important;
+  transform: translateY(-3px) !important; /* Button lifts up slightly on hover */
+  box-shadow: 0 8px 20px rgba(157, 124, 216, 0.3) !important; /* Stronger shadow on hover */
+  color: white !important;
+  text-decoration: none !important;
+}
+
+/* Disabled button state - visually faded out */
+.movie-card-detail .learn-more-btn:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .movie-card-detail .learn-more-btn {
+    padding: 0.6rem 1rem !important; /* Smaller padding on mobile */
+    font-size: 0.9rem !important; /* Adjust font size on smaller screens */
+  }
+}
+
+
+/* Submit Review Button Styles */
+.movie-card-detail .submit-review-btn {
+  background: linear-gradient(135deg, #9d7cd8, #bb9af7) !important;
+  border: none !important;
+  color: white !important;
+  padding: 0.75rem 1.25rem !important;
+  border-radius: 25px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  transition: opacity 0.3s ease, transform 0.3s ease !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  width: auto !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.movie-card-detail .submit-review-btn:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}
+
+/* Hover state for submit button */
+.movie-card-detail .submit-review-btn:hover {
+  opacity: 0.9 !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 20px rgba(157, 124, 216, 0.3) !important;
+  color: white !important;
+  text-decoration: none !important;
+}

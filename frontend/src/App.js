@@ -5,39 +5,21 @@ import Login from "./component/login/Login";
 import SignUp from "./component/signup/SignUp";
 import Home from "./component/pages/Home";
 import MovieDetail from "./component/screens/MovieDetail";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
-import { ToastContainer } from "react-bootstrap";
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css"; // Ensure this is in the component where the toast is triggered
+import MovieRating from "./component/rating/MovieRating";
 const App = () => {
-  const movieData = {
-    title: "Inception",
-    image: "https://via.placeholder.com/150",
-    description: "A mind-bending thriller by Christopher Nolan.",
-    director: "Christopher Nolan",
-    genre: "Sci-Fi, Thriller",
-  };
   return (
     <>
-        <ToastContainer position="top-right" autoClose={5000} hideProgressBar />
-      <SignedOut>
-        <SignInButton />
-      </SignedOut>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
+      <ToastContainer style={{backgroundColor:'var(--bg-darker, #16161e)'}} position="top-right" autoClose={5000} hideProgressBar />
       <Router>
         <NavBar />
         <Routes>
           <Route path="/" element={<Home />} />
-
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/movie/:id" element={<MovieDetail />} />
+          <Route path="/rating" element={<MovieRating />} />
         </Routes>
       </Router>
     </>

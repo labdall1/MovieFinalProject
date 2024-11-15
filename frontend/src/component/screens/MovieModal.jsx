@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import "./MovieModal.css"; // Import the CSS file
+
+const baseurl = process.env.REACT_APP_API_URL;
 
 const MovieModal = ({ show, handleClose }) => {
   const { register, handleSubmit, reset } = useForm();
@@ -13,7 +16,7 @@ const MovieModal = ({ show, handleClose }) => {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
-        "https://localhost:7219/api/movies",
+        `${baseurl}movies`,
         {
           title: data.title,
           imageUrl: data.imageUrl,
@@ -35,9 +38,9 @@ const MovieModal = ({ show, handleClose }) => {
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={handleClose} className="movie-modal">
       <Modal.Header closeButton>
-        <Modal.Title>Add New Movie</Modal.Title>
+        <Modal.Title style={{color: "white"}}>Add New Movie</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit(onSubmit)}>

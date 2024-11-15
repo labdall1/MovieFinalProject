@@ -36,3 +36,29 @@
     transform: rotate(360deg);
   }
 }
+
+.btn-primary {
+  background: linear-gradient(135deg, #9d7cd8, #bb9af7) !important;
+  border: none !important;
+  color: white !important;
+  padding: 0.5rem 1.25rem !important;
+  border-radius: 25px !important;
+  font-weight: 500 !important;
+  transition: opacity 0.3s ease !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  width: auto !important;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #7dcfff, #2ac3de) !important;
+  border: none !important;
+  color: white !important;
+  padding: 0.5rem 1.25rem !important;
+  border-radius: 25px !important;
+  font-weight: 500 !important;
+  transition: opacity 0.3s ease !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  width: auto !important;
+}

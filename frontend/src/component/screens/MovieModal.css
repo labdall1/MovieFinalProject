@@ -1,0 +1,100 @@
+/* Add Movie Button Styles */
+.add-movie-btn {
+    background: linear-gradient(135deg, #9d7cd8, #bb9af7) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.75rem 1.25rem !important;
+    border-radius: 25px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    transition: opacity 0.3s ease, transform 0.3s ease !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    width: auto !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+    cursor: pointer;
+  }
+  .modal-content {
+    background-color: var(--bg-darker, #16161e);
+
+
+  }
+  /* Hover effect for Add Movie Button */
+  .add-movie-btn:hover {
+    opacity: 0.9 !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 20px rgba(157, 124, 216, 0.3) !important;
+    color: white !important;
+    text-decoration: none !important;
+  }
+  
+  /* Disabled state */
+  .add-movie-btn:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+  }
+  
+  /* Modal Layout Styling */
+  .modal-content {
+    border-radius: 15px !important; /* Matching rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important; /* Light shadow for modal */
+    padding: 20px;
+  }
+  
+  /* Form Fields Styling */
+  .form-control {
+    border-radius: 12px !important; /* Rounded corners for form fields */
+    padding: 12px 15px !important; /* Padding inside form fields */
+    border: 1px solid #e3e3e3 !important; /* Light border */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important; /* Subtle shadow for fields */
+    font-size: 14px !important;
+    transition: all 0.3s ease;
+  }
+  
+  /* Form Field Focus Styling */
+  .form-control:focus {
+    border-color: #9d7cd8 !important; /* Border color on focus */
+    box-shadow: 0 0 5px rgba(157, 124, 216, 0.4) !important; /* Focus shadow effect */
+    outline: none !important;
+  }
+  
+  /* Form Label Styling */
+  .form-label {
+    font-weight: 600 !important;
+    font-size: 16px !important;
+    margin-bottom: 8px !important;
+    color: #c0caf5 !important;
+  }
+  
+  /* Submit Button in Modal */
+  .modal-footer .add-movie-btn {
+    background: linear-gradient(135deg, #9d7cd8, #bb9af7) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.75rem 1.25rem !important;
+    border-radius: 25px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    transition: opacity 0.3s ease, transform 0.3s ease !important;
+    text-decoration: none !important;
+    cursor: pointer;
+    width: 100% !important; /* Full width button */
+  }
+  
+  /* Submit Button Hover Effect */
+  .modal-footer .add-movie-btn:hover {
+    opacity: 0.9 !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 20px rgba(157, 124, 216, 0.3) !important;
+    color: white !important;
+    text-decoration: none !important;
+  }
+  
+  /* Disabled State for Submit Button */
+  .modal-footer .add-movie-btn:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+  }
+  
