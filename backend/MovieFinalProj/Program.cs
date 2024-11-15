@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -329,6 +330,38 @@ app.MapPost("/api/list/movies", [Authorize] async (CreateMoveInListDto createMov
 .WithName("CreateMovieInsideList")
 .WithOpenApi();
 
+app.MapGet("/api/movies/search", async ([FromQuery]string? query, AppDBContext db) =>
+{
+    var moviesQuery = db.Movies
+        .Include(m => m.Reviews)
+        .AsQueryable();
+
+    if (!string.IsNullOrWhiteSpace(query))
+    {
+        // Case-insensitive search in title and summary
+        moviesQuery = moviesQuery.Where(m =>
+            m.Title.ToLower().Contains(query.ToLower()) ||
+            m.Summary.ToLower().Contains(query.ToLower())
+        );
+    }
+
+    var movies = await moviesQuery
+        .Select(m => new MovieDto
+        {
+            Id = m.Id,
+            Title = m.Title,
+            ImageUrl = m.ImageUrl,
+            Summary = m.Summary,
+            ReleaseDate = m.ReleaseDate,
+            AverageRating = m.AverageRating,
+            ReviewCount = m.Reviews.Count
+        })
+        .ToListAsync();
+
+    return Results.Ok(movies);
+})
+.WithName("SearchMovies")
+.WithOpenApi();
 
 
 // MovieList Endpoints
